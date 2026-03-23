@@ -7,11 +7,11 @@ from sklearn.linear_model import LinearRegression
 
 st.set_page_config(page_title="Ultimate Bioreactor Simulator", layout="wide")
 
-st.title("🧪 Ultimate Bioreactor Simulation Platform")
+st.title(" Ultimate Bioreactor Simulation Platform")
 st.markdown("### AI + Control + Dynamics Integrated System")
 
-# 🔹 Sidebar Controls
-st.sidebar.header("⚙️ Control Panel")
+#  Sidebar Controls
+st.sidebar.header(" Control Panel")
 
 T = st.sidebar.slider("Temperature (°C)", 20, 50, 37)
 pH_init = st.sidebar.slider("Initial pH", 4.0, 9.0, 7.0)
@@ -21,7 +21,7 @@ S0 = st.sidebar.slider("Initial Substrate", 1.0, 20.0, 10.0)
 use_pid = st.sidebar.checkbox("Enable pH Control (PID)", True)
 run_anim = st.sidebar.checkbox("Run Live Animation", False)
 
-# 🔹 Constants
+#  Constants
 mu_max = 0.6
 T_opt = 37
 pH_opt = 7
@@ -33,10 +33,10 @@ k_prod = 0.2
 # PID constants
 Kp, Ki, Kd = 2.0, 0.1, 0.05
 
-# 🔹 Time
+#  Time
 t = np.linspace(0, 20, 200)
 
-# 🔹 Variables
+#  Variables
 X = np.zeros(len(t))
 S = np.zeros(len(t))
 P = np.zeros(len(t))
@@ -49,7 +49,7 @@ pH[0] = pH_init
 integral = 0
 prev_error = 0
 
-# 🔹 Simulation
+#  Simulation
 for i in range(1, len(t)):
     mu_T = mu_max * np.exp(-((T - T_opt)**2 / kT))
     mu_pH = np.exp(-((pH[i-1] - pH_opt)**2 / kpH))
@@ -73,10 +73,10 @@ for i in range(1, len(t)):
     P[i] = P[i-1] + dP * 0.1
     pH[i] = pH[i-1] + dpH * 0.1
 
-# 🔹 Layout
+# Layout
 col1, col2 = st.columns(2)
 
-# 📈 Animation or static plot
+# Animation or static plot
 if run_anim:
     placeholder = st.empty()
     for i in range(10, len(t)):
@@ -88,7 +88,7 @@ if run_anim:
         time.sleep(0.05)
 else:
     with col1:
-        st.subheader("📈 Biomass & Product")
+        st.subheader(" Biomass & Product")
         fig1, ax1 = plt.subplots()
         ax1.plot(t, X, label="Biomass")
         ax1.plot(t, P, label="Product")
@@ -96,14 +96,14 @@ else:
         st.pyplot(fig1)
 
     with col2:
-        st.subheader("⚗️ Substrate & pH")
+        st.subheader(" Substrate & pH")
         fig2, ax2 = plt.subplots()
         ax2.plot(t, S, label="Substrate")
         ax2.plot(t, pH, label="pH")
         ax2.legend()
         st.pyplot(fig2)
 
-# 🔹 AI MODEL
+#  AI MODEL
 temps = np.linspace(20, 50, 30)
 pHs = np.linspace(4, 9, 30)
 
@@ -123,21 +123,21 @@ model.fit(X_train, y_train)
 
 pred = model.predict([[T, pH_init]])
 
-# 🔹 3D Visualization
+#  3D Visualization
 fig3d = go.Figure(data=[go.Surface(z=[X[:50], X[:50]])])
 fig3d.update_layout(title="3D Reactor Behavior")
 
-# 🔹 Insights
-st.subheader("🧠 Insights Panel")
+# Insights
+st.subheader(" Insights Panel")
 
-st.write(f"🤖 AI Predicted Growth Score: {pred[0]:.3f}")
+st.write(f" AI Predicted Growth Score: {pred[0]:.3f}")
 
 if use_pid:
     st.success("PID Control Active → Stable pH")
 else:
     st.warning("No Control → pH may drop")
 
-# 🔹 Optimizer
+#  Optimizer
 if st.button("Find Best Conditions"):
     best_growth = 0
     best_T = 0
@@ -154,10 +154,10 @@ if st.button("Find Best Conditions"):
                 best_T = temp
                 best_pH = ph
 
-    st.success(f"🔥 Optimal: T={best_T:.2f}°C, pH={best_pH:.2f}")
+    st.success(f" Optimal: T={best_T:.2f}°C, pH={best_pH:.2f}")
 
-# 🔹 3D plot display
+#  3D plot display
 st.plotly_chart(fig3d)
 
 st.markdown("---")
-st.write("🚀 Integrated Simulation: Dynamics + Control + AI Optimization")
+st.write(" Integrated Simulation: Dynamics + Control + AI Optimization")
